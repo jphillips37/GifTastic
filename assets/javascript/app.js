@@ -1,4 +1,4 @@
-var categoryArray = ["Halo", "Halo 2", "Halo 3", "Halo 4"];
+var categoryArray = ["family guy", "scrubs", "atypical", "turn", "matrix"];
 var inputValue;
 var searchValue;
 var searchLimit = 10;
@@ -10,9 +10,9 @@ function renderButtons() {
     }
 }
 
-function gifQuery(query, searchLimit) {
+function gifQuery(query) {
     var queryUrl ="https://api.giphy.com/v1/gifs/search?q=" +
-    query + "&api_key=dc6zaTOxFJmzC&limit="+searchLimit;
+    query + "&api_key=dc6zaTOxFJmzC&limit=" + searchLimit;
 
     $.ajax({
         url: queryUrl,
@@ -21,18 +21,18 @@ function gifQuery(query, searchLimit) {
         .then(function(response) {
             console.log(response)
             console.log(response.data[0].images.fixed_height_still.url);
-            for (i=0; i < categoryArray.length; i++) {
+            for (i=0; i < response.data.length; i++) {
                 displayImages(response, i);
             }
         })
 }
 
 function displayImages(response, i) {
-    var gifDiv = $("<div id='image-" + i + "'>");
+    var gifDiv = $("<div id='col-sm-4 image-" + i + "'>");
 
     var rating =response.data[i].rating;
 
-    var p = $("<p>").text("Rating: " + rating);
+    var p = $("<h4>").text("Rating: " + rating);
 
     var newImage = $("<img>");
     newImage.attr("src", response.data[i].images.fixed_height_still.url)
@@ -55,5 +55,4 @@ $(".buttonRow").on("click", ".gif-button", function() {
     searchValue = $(this).text();
 
     gifQuery(searchValue, searchLimit);
-
 })
