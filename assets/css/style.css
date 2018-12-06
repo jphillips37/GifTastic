@@ -1,5 +1,8 @@
 button {
-    margin-right: 5px;
+    margin: 5px;
+}
+input {
+    height: 35px;
 }
 /* .image {
     width: 400px;
