@@ -1,70 +1,72 @@
-var categoryArray = ["family guy", "scrubs", "atypical", "matrix"];
+var topicsArray = ["family guy", "scrubs", "atypical", "Better Call Saul"];
 var inputValue;
 var searchValue;
-var searchLimit = 10;
+var searchOffset = 0;
+var favsArray = [];
 
 $("#loadButton").hide();
 
 function renderButtons() {
     $("#searchButtons").empty();
-    for (i=0; i < categoryArray.length; i++) {
-      $("#searchButtons").append("<button class='gif-button btn btn-info'>"+categoryArray[i]+"</button>")
+    for (i=0; i < topicsArray.length; i++) {
+      $("#searchButtons").append("<button class='gif-button btn btn-info'>"+topicsArray[i]+"</button>");
     }
 }
 
 function gifQuery(query) {
     var queryUrl ="https://api.giphy.com/v1/gifs/search?q=" +
-    query + "&api_key=dc6zaTOxFJmzC&limit=" + searchLimit;
+    query + "&api_key=dc6zaTOxFJmzC&limit=10&offset=" + searchOffset;
 
     $.ajax({
         url: queryUrl,
         method: "GET"
     })
         .then(function(response) {
-            console.log(response)
-            console.log(response.data[0].images.fixed_height_still.url);
-            for (i=0; i < response.data.length; i++) {
-                displayImages(response, i);
-                $("#loadButton").show();
-            }
+            console.log(searchOffset);
+            // console.log(response)
+            // console.log(response.data[0].images.fixed_height_still.url);
+                for (i=0; i < response.data.length; i++){
+                    displayImages(response, i);
+                    $("#loadButton").show();
+                }
         })
 }
 
 function displayImages(response, i) {
-    var gifDiv = $("<div id='col-sm-4 image-" + i + "'>");
+    var gifDiv = $("<div>");
 
     var rating =response.data[i].rating;
 
-    var p = $("<h4>").text("Rating: " + rating);
+    var h = $("<h4>").text("Rating: " + rating);
 
-    var newImage = $("<img class='gif'>");
+    var newImage = $("<img id='image-" + i + " 'class='gif'>");
     newImage.attr("src", response.data[i].images.fixed_height_still.url);
     newImage.attr("data-still", response.data[i].images.fixed_height_still.url);
     newImage.attr("data-animate", response.data[i].images.fixed_height.url);
     newImage.attr("data-state", "still");
 
-    gifDiv.append(p);
     gifDiv.append(newImage);
+    gifDiv.append(h);
+    // gifDiv.append("<p data-image='image-" + i + "'>favorite!</p>"); didn't get arround to adding favorites
 
     $(".gifDisplay").append(gifDiv);
 }
 
 renderButtons();
-// gifQuery("archer", searchLimit);
+// gifQuery("archer", searchOffset);
 
 $(".buttonRow").on("click", ".gif-button", function() {
     event.preventDefault();
 
     $(".gifDisplay").empty();
-    searchLimit = 10;
+    searchOffset = 0;
 
-    console.log($(this).text());
     searchValue = $(this).text();
 
-    gifQuery(searchValue, searchLimit);
+    gifQuery(searchValue);
 });
 
-$(".gifDisplay").on("click", ".gif",function() {    
+$(".gifDisplay").on("click", "img",function() {    
     var state = $(this).attr("data-state");
     
     if (state == "still") {
@@ -81,12 +83,17 @@ $(".gifDisplay").on("click", ".gif",function() {
   });
 
   $("#searchButton").on("click", function(){
-      categoryArray.push($("#addButton").val().trim());
+      topicsArray.push($("#addButton").val().trim());
       renderButtons();
+      $("#addButton").val("");
   });
 
   $("#loadButton").on("click", function(){
-    $(".gifDisplay").empty();
-    searchLimit = searchLimit + 10;
-    gifQuery(searchValue, searchLimit);
+    searchOffset = searchOffset + 10;
+    gifQuery(searchValue);
   });
+
+  $(".gifDisplay").on("click", "p", function() {
+      favsArray.push($(this).attr("data-image"));
+      console.log(favsArray);
+  })

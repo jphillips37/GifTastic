@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Giphy Assignment</title>
+    <title>GifTastic!</title>
 
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
@@ -13,18 +13,19 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> <!-- jquery link -->
 </head>
-<body>
+<body background="assets/images/background.png">
     <div class="row">
-        <div class="col-sm-12 buttonRow" id="searchButtons"></div> <!-- buttons get populated here -->
+        <div class="col-lg-12 buttonRow" id="searchButtons"></div> <!-- buttons get populated here -->
     </div>
     <div class="row">
-        <div class="col-sm-9 gifDisplay"></div>
-        <div class="col-sm-3 favorites"> <!-- favorites go here under the search bar -->
-            <h2>Add a category!</h2>
-            <input id="addButton" placeholder="search...">
-            <button id="searchButton" class="btn btn-info">Add</button>
+        <div class="col-lg-9">
+            <div class="row gifDisplay"></div>
         </div>
-        
+        <div class="col-lg-3 favorites"> <!-- favorites go here under the search bar -->
+            <h2>Add a Tv Show!</h2>
+            <input id="addButton" placeholder="search...">
+            <button id="searchButton" type="submit" class="btn btn-info">Add</button>
+        </div>
     </div>
     <div class="row">
         <div class="col">

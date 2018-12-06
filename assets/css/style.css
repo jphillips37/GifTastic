@@ -4,6 +4,9 @@ button {
 input {
     height: 35px;
 }
-/* .image {
-    width: 400px;
-} */
+img {
+    margin: 5px;
+}
+.gifDisplay {
+    margin-left: 15px;
+}
